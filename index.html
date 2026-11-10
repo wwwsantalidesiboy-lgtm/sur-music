@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8"><title>সুর – ফ্রি মিউজিক</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#0e0b0a;--s1:#1a1513;--s2:#251e1b;--tx:#f5ece6;--mu:#a89990;--ac:#ff8a3d;--ac2:#ff4d6d;color-scheme:dark;box-sizing:border-box}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,"Noto Sans Bengali",sans-serif}
+body{padding-top:env(safe-area-inset-top,0px)}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+header{position:sticky;top:0;z-index:5;display:flex;gap:6px;align-items:center;padding:10px 14px;background:rgba(14,11,10,.92);backdrop-filter:blur(10px);overflow-x:auto}
+header b{font-size:20px;color:var(--ac);margin-right:8px}
+header a{padding:7px 14px;border-radius:99px;background:var(--s1);white-space:nowrap;font-size:14px}
+header a.on{background:var(--ac);color:#1a0d02;font-weight:700}
+main{padding:14px 14px 190px;max-width:1100px;margin:auto}
+h2{font-size:20px;margin:22px 0 10px}h1{margin:6px 0}
+.row{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+.card{flex:0 0 150px;scroll-snap-align:start}.card .cv{width:150px;height:150px}
+.card p{margin:6px 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card small,.mu{color:var(--mu);font-size:12px}
+.cv{position:relative;border-radius:10px;overflow:hidden;background:#333;display:grid;place-items:center;font-size:34px}
+.cv.r{border-radius:50%}.cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:10px 16px;border-radius:12px;background:linear-gradient(135deg,var(--s2),var(--s1));font-size:14px}
+.hero{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px}.hero .cv{width:200px;height:200px;box-shadow:0 20px 50px rgba(255,138,61,.25)}
+.btn{background:var(--ac);color:#1a0d02;font-weight:700;padding:10px 20px;border-radius:99px;margin:8px 8px 0 0}.btn.g{background:var(--s2);color:var(--tx)}
+.tr{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px}.tr:hover,.tr.cur{background:var(--s1)}
+.tr .cv{width:44px;height:44px;flex:none;font-size:16px}.tr .m{flex:1;min-width:0;cursor:pointer}.tr .m div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr.cur .t{color:var(--ac)}.ic{padding:6px 9px;font-size:18px;color:var(--mu)}.ic.on{color:var(--ac2)}
+.eq{display:none;gap:2px;height:14px;align-items:flex-end}.tr.cur.pl .eq{display:flex}.eq i{width:3px;background:var(--ac);animation:e .8s infinite ease-in-out}
+.eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}@keyframes e{0%,100%{height:3px}50%{height:14px}}
+input.s{width:100%;padding:14px 18px;border-radius:99px;border:1px solid var(--s2);background:var(--s1);color:var(--tx);font-size:16px}
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:9;background:rgba(26,21,19,.97);backdrop-filter:blur(12px);border-top:1px solid var(--s2);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center}
+#bar .np{display:flex;gap:10px;align-items:center;min-width:0}#bar .cv{width:50px;height:50px;flex:none;font-size:20px;animation:fi .5s}@keyframes fi{from{opacity:0;transform:scale(.9)}}
+#bar .np div{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctl{display:flex;align-items:center;gap:2px}.ctl .ic{font-size:20px}.ctl .pp{background:var(--ac);color:#1a0d02;border-radius:50%;width:42px;height:42px;padding:0}.ic.on2{color:var(--ac)}
+.sk{grid-column:1/-1;display:flex;gap:8px;align-items:center;font-size:11px;color:var(--mu)}.sk input[type=range]{flex:1;accent-color:var(--ac)}
+#vol{width:80px!important;flex:none!important}
+.note{background:var(--s1);border-left:3px solid var(--ac);padding:10px 14px;border-radius:8px;font-size:13px;color:var(--mu);margin:10px 0}
+#toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:var(--s2);padding:10px 18px;border-radius:99px;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:20}#toast.on{opacity:1}
+#md{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:30;display:none;place-items:center}#md.on{display:grid}
+#md>div{background:var(--s1);border-radius:16px;padding:20px;width:min(340px,90vw);max-height:80vh;overflow:auto}
+#md input{width:100%;padding:10px;border-radius:8px;border:1px solid var(--s2);background:var(--bg);color:var(--tx);margin:8px 0}
+.sh{height:150px;border-radius:10px;background:linear-gradient(90deg,var(--s1),var(--s2),var(--s1));background-size:200% 100%;animation:sm 1.2s infinite}@keyframes sm{to{background-position:-200% 0}}
+.pg{animation:fi .35s}
+</style></head><body>
+<header><b>🎵 সুর</b><a href="#/" data-n="home">হোম</a><a href="#/search" data-n="search">সার্চ</a><a href="#/library" data-n="library">লাইব্রেরি</a><a href="#/queue" data-n="queue">কিউ</a></header>
+<main id="main"></main><div id="toast"></div><div id="md"></div>
+<div id="bar">
+<div class="np"><div class="cv" id="bc">♪</div><div><div id="bt">কিছু বাজছে না</div><small class="mu" id="ba">কোনো গান বেছে নাও</small></div></div>
+<div class="ctl"><button class="ic" id="bs" title="শাফল">⇄</button><button class="ic" id="bp">⏮</button><button class="ic pp" id="bpl">▶</button><button class="ic" id="bn">⏭</button><button class="ic" id="br" title="রিপিট">↻</button></div>
+<div class="sk"><span id="cu">0:00</span><input type="range" id="sk" min="0" max="1000" value="0"><span id="du">0:00</span><span>🔊</span><input type="range" id="vol" min="0" max="100" value="80"></div>
+</div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ld=(k,d)=>{try{const v=localStorage.getItem('sur_'+k);return v?JSON.parse(v):d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem('sur_'+k,JSON.stringify(v))}catch(e){}};
+let liked=ld('liked',[]),pls=ld('pls',[]),recent=ld('recent',[]),TK=ld('tk',{}),LISTS={};
+const fmt=ms=>{const s=Math.round(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const hue=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))%360;return h};
+const grad=s=>`linear-gradient(135deg,hsl(${hue(s)},70%,45%),hsl(${(hue(s)+50)%360},70%,25%))`;
+const cv=(art,id,ch,cls='')=>`<div class="cv ${cls}" style="background:${grad(id)}">${esc(ch||'♪')}${art?`<img src="${esc(art)}" alt="" onerror="this.remove()">`:''}</div>`;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2200)}
+/* ---------- catalog ---------- */
+const cache=new Map();let online=true;
+async function api(u){if(cache.has(u))return cache.get(u);try{const c=new AbortController(),t=setTimeout(()=>c.abort(),7000);const r=await fetch(u,{signal:c.signal});clearTimeout(t);const j=await r.json();cache.set(u,j);return j}catch(e){return null}}
+const IT='https://itunes.apple.com/';
+const mapT=r=>({id:'i'+r.trackId,title:r.trackName,artist:r.artistName,artistId:r.artistId,album:r.collectionName,albumId:r.collectionId,art:(r.artworkUrl100||'').replace('100x100','300x300'),url:r.previewUrl,dur:r.trackTimeMillis});
+const mapA=r=>({id:r.collectionId,name:r.collectionName,artist:r.artistName,artistId:r.artistId,art:(r.artworkUrl100||'').replace('100x100','400x400')});
+const reg=a=>{a.forEach(t=>{TK[t.id]=t});return a};
+/* demo catalog (offline fallback) */
+const DT=['তারার আলো','নদীর গান','মেঘের ভেলা','শরতের সকাল','ভোরের সুর'],DN=['স্বপ্নের সুর','বৃষ্টির দিনে','কাশফুল'],DAR=['ডেমো শিল্পী ১','ডেমো শিল্পী ২'];
+const D={alb:[],tr:{}};DN.forEach((n,a)=>{const al={id:'d'+a,name:n,artist:DAR[a%2],artistId:'da'+a%2,art:'',demo:1};D.alb.push(al);D.tr[al.id]=DT.map((t,i)=>({id:`d${a}_${i}`,title:t,artist:al.artist,artistId:al.artistId,album:n,albumId:al.id,art:'',demo:1,seed:a*5+i,dur:8000}))});
+const demoAll=()=>Object.values(D.tr).flat();
+const wavC={};function wav(seed){if(wavC[seed])return wavC[seed];const sr=8000,n=sr*8,b=new DataView(new ArrayBuffer(44+n*2)),w=(o,s)=>[...s].forEach((c,i)=>b.setUint8(o+i,c.charCodeAt(0)));
+w(0,'RIFF');b.setUint32(4,36+n*2,true);w(8,'WAVEfmt ');b.setUint32(16,16,true);b.setUint16(20,1,true);b.setUint16(22,1,true);b.setUint32(24,sr,true);b.setUint32(28,sr*2,true);b.setUint16(32,2,true);b.setUint16(34,16,true);w(36,'data');b.setUint32(40,n*2,true);
+const sc=[261.6,293.7,329.6,392,440,523.3];for(let i=0;i<n;i++){const k=Math.floor(i/(sr/2)),f=sc[(k*3+seed*2+(k>>2))%6],t=(i%(sr/2))/sr;b.setInt16(44+i*2,Math.sin(2*Math.PI*f*i/sr)*Math.exp(-t*4)*9000,true)}
+return wavC[seed]=URL.createObjectURL(new Blob([b],{type:'audio/wav'}))}
+async function cSearch(q){const j=await api(`${IT}search?term=${encodeURIComponent(q)}&entity=song&limit=30`);if(!j)return null;return reg(j.results.filter(r=>r.trackName).map(mapT))}
+async function cAlbum(id){if(String(id)[0]=='d'){const al=D.alb.find(a=>a.id==id);return al&&{album:al,tracks:reg(D.tr[id])}}
+const j=await api(`${IT}lookup?id=${id}&entity=song`);if(!j||!j.results.length)return null;const [c,...s]=j.results;return{album:mapA(c),tracks:reg(s.filter(r=>r.trackName).map(mapT))}}
+async function cArtist(id){if(String(id)[0]=='d'){const al=D.alb.filter(a=>a.artistId==id);return{artist:{id,name:al[0]?.artist||'শিল্পী'},tracks:reg(al.flatMap(a=>D.tr[a.id])),albums:al}}
+const [a,b]=await Promise.all([api(`${IT}lookup?id=${id}&entity=song&limit=12`),api(`${IT}lookup?id=${id}&entity=album&limit=14`)]);if(!a||!a.results.length)return null;
+return{artist:{id,name:a.results[0].artistName},tracks:reg(a.results.filter(r=>r.trackName).map(mapT)),albums:(b?b.results.filter(r=>r.wrapperType=='collection').map(mapA):[])}}
+/* ---------- player ---------- */
+const au=new Audio(),P={q:[],i:-1,shuf:ld('shuf',false),rep:ld('rep',0)};au.volume=ld('vol',.8);$('#vol').value=au.volume*100;
+const cur=()=>P.q[P.i];
+function play(list,i){P.q=list.slice();P.i=i;load()}
+function load(){const t=cur();if(!t)return;const u=t.url||(t.demo?wav(t.seed):null);if(!u){toast('এই গানের অডিও নেই');if(P.q.length>1)setTimeout(()=>nxt(true),600);return}
+au.src=u;au.play().catch(()=>{});recent=[t.id,...recent.filter(x=>x!=t.id)].slice(0,30);sv('recent',recent);sv('tk',Object.fromEntries(Object.entries(TK).filter(([k])=>liked.includes(k)||recent.includes(k)||pls.some(p=>p.t.includes(k)))));upd()}
+function nxt(auto){if(!P.q.length)return;if(auto===true&&P.rep==2){au.currentTime=0;au.play();return}
+let i=P.shuf&&P.q.length>1?(()=>{let r;do{r=Math.floor(Math.random()*P.q.length)}while(r==P.i);return r})():P.i+1;
+if(i>=P.q.length){if(P.rep==1||auto!==true)i=0;else{au.pause();upd();return}}P.i=i;load()}
+function prv(){if(au.currentTime>3){au.currentTime=0;return}P.i=(P.i-1+P.q.length)%P.q.length;load()}
+au.onended=()=>nxt(true);au.onplay=au.onpause=upd;
+au.ontimeupdate=()=>{if(au.duration){$('#sk').value=au.currentTime/au.duration*1000;$('#cu').textContent=fmt(au.currentTime*1000);$('#du').textContent=fmt(au.duration*1000)}};
+$('#sk').oninput=e=>{if(au.duration)au.currentTime=e.target.value/1000*au.duration};
+$('#vol').oninput=e=>{au.volume=e.target.value/100;sv('vol',au.volume)};
+$('#bpl').onclick=()=>{if(!cur())return toast('আগে একটা গান বেছে নাও');au.paused?au.play():au.pause()};
+$('#bn').onclick=()=>nxt();$('#bp').onclick=()=>cur()&&prv();
+$('#bs').onclick=()=>{P.shuf=!P.shuf;sv('shuf',P.shuf);upd()};$('#br').onclick=()=>{P.rep=(P.rep+1)%3;sv('rep',P.rep);upd()};
+let lastId=null;
+function upd(){const t=cur();$('#bt').textContent=t?t.title:'কিছু বাজছে না';$('#ba').textContent=t?t.artist:'কোনো গান বেছে নাও';
+if(t&&t.id!=lastId){lastId=t.id;const c=$('#bc');c.outerHTML=cv(t.art,t.id,'♪').replace('class="cv ','id="bc" class="cv ')}
+$('#bpl').textContent=au.paused?'▶':'⏸';$('#bs').classList.toggle('on2',P.shuf);$('#br').classList.toggle('on2',P.rep>0);$('#br').textContent=P.rep==2?'🔂':'↻';
+document.querySelectorAll('.tr[data-id]').forEach(r=>{const c=t&&r.dataset.id==t.id;r.classList.toggle('cur',c);r.classList.toggle('pl',c&&!au.paused)});}
+/* ---------- views ---------- */
+const tr=(t,l,i,x={})=>`<div class="tr" data-id="${esc(t.id)}">${x.n?`<span class="mu" style="width:20px">${i+1}</span>`:cv(t.art,t.id,'♪')}<div class="m" data-a="play" data-l="${l}" data-i="${i}"><div class="t">${esc(t.title)}</div><div class="mu">${esc(t.artist)}${t.album&&!x.n?' · '+esc(t.album):''}</div></div><span class="eq"><i></i><i></i><i></i></span><span class="mu">${t.dur?fmt(t.dur):''}</span><button class="ic ${liked.includes(t.id)?'on':''}" data-a="like" data-id="${esc(t.id)}">${liked.includes(t.id)?'♥':'♡'}</button><button class="ic" data-a="add" data-id="${esc(t.id)}">＋</button></div>`;
+const list=(ts,l,x)=>{LISTS[l]=ts;return ts.length?ts.map((t,i)=>tr(t,l,i,x)).join(''):'<p class="mu">এখানে এখনো কিছু নেই।</p>'};
+const alc=a=>`<a class="card" href="#/album/${esc(a.id)}">${cv(a.art,a.id,'♪')}<p>${esc(a.name)}</p><small>${esc(a.artist)}</small></a>`;
+const arc=a=>`<a class="card" href="#/artist/${esc(a.id)}">${cv('',a.id,[...a.name][0],'r')}<p style="text-align:center">${esc(a.name)}</p></a>`;
+const sk=()=>'<div class="sh"></div>';
+const GEN=['বাংলা ব্যান্ড','রবীন্দ্রসংগীত','নজরুলগীতি','আধুনিক বাংলা','ফোক','বলিউড রোমান্টিক','লো-ফাই','ক্লাসিক্যাল'],GQ=['bangla band','rabindra sangeet','nazrul geeti','bengali modern songs','baul folk','bollywood romantic','lofi','indian classical'];
+const ART=['Arijit Singh','Anupam Roy','Shreya Ghoshal','Kishore Kumar','Armaan Malik','Lopamudra Mitra'];
+const view=h=>{$('#main').innerHTML='<div class="pg">'+h+'</div>';upd()};
+async function home(){view('<h2>নতুন অ্যালবাম</h2>'+sk());
+const [al,...ar]=await Promise.all([api(`${IT}search?term=bengali&entity=album&limit=14`),...ART.map(n=>api(`${IT}search?term=${encodeURIComponent(n)}&entity=musicArtist&limit=1`))]);
+const A=al?al.results.map(mapA):[];online=A.length>0;
+const R=ar.map(x=>x&&x.results[0]).filter(Boolean).map(r=>({id:r.artistId,name:r.artistName}));
+view((online?'':'<div class="note">ক্যাটালগ সার্ভারে সংযোগ হয়নি, তাই ডেমো গান দেখানো হচ্ছে (৮ সেকেন্ডের সিন্থ সুর)। সংযোগ পেলে আসল অ্যালবাম ও ৩০ সেকেন্ডের প্রিভিউ আসবে।</div>')+
+`<h2>নতুন অ্যালবাম</h2><div class="row">${(online?A:D.alb).map(alc).join('')}</div>`+
+`<h2>জনপ্রিয় আর্টিস্ট</h2><div class="row">${(R.length?R:[{id:'da0',name:DAR[0]},{id:'da1',name:DAR[1]}]).map(arc).join('')}</div>`+
+`<h2>জনরা</h2><div class="chips">${GEN.map((g,i)=>`<a class="chip" href="#/search/${encodeURIComponent(GQ[i])}">${g}</a>`).join('')}</div>`)}
+let st;async function search(q=''){view(`<input class="s" id="q" placeholder="গান, আর্টিস্ট বা অ্যালবামের নাম…" value="${esc(q)}" autofocus><div id="res" style="margin-top:12px"></div>`);
+const run=async v=>{const r=$('#res');if(!v.trim()){r.innerHTML='<p class="mu">কিছু লিখে খোঁজো — বাংলা বা ইংরেজি।</p>';return}r.innerHTML=sk();let ts=await cSearch(v);
+if(ts===null){const l=v.toLowerCase();ts=demoAll().filter(t=>(t.title+t.artist+t.album).toLowerCase().includes(l));r.innerHTML='<div class="note">ক্যাটালগ পাওয়া যায়নি — শুধু ডেমো গানে খোঁজা হয়েছে।</div>'+list(ts,'s')}
+else r.innerHTML=ts.length?list(ts,'s'):'<p class="mu">কিছু পাওয়া যায়নি।</p>';upd()};
+$('#q').oninput=e=>{clearTimeout(st);st=setTimeout(()=>run(e.target.value),450)};run(q)}
+async function album(id){view(sk());const d=await cAlbum(id);if(!d)return view('<p class="mu">অ্যালবামটি লোড করা যায়নি।</p>');const{album:a,tracks:t}=d;
+view(`<div class="hero">${cv(a.art,a.id,'♪')}<div><small class="mu">অ্যালবাম</small><h1>${esc(a.name)}</h1><a class="mu" href="#/artist/${esc(a.artistId)}">${esc(a.artist)}</a> · <span class="mu">${t.length} গান</span><br><button class="btn" data-a="all" data-l="al">▶ সব বাজাও</button><button class="btn g" data-a="shuf" data-l="al">⇄ শাফল</button></div></div>`+list(t,'al',{n:1}))}
+async function artist(id){view(sk());const d=await cArtist(id);if(!d)return view('<p class="mu">আর্টিস্ট লোড করা যায়নি।</p>');
+view(`<div class="hero">${cv('',d.artist.id,[...d.artist.name][0],'r')}<div><small class="mu">আর্টিস্ট</small><h1>${esc(d.artist.name)}</h1><button class="btn" data-a="all" data-l="ar">▶ বাজাও</button></div></div><h2>জনপ্রিয় গান</h2>${list(d.tracks,'ar')}<h2>অ্যালবাম</h2><div class="row">${d.albums.map(alc).join('')||'<p class="mu">কিছু নেই</p>'}</div>`)}
+function lib(){const g=ids=>ids.map(i=>TK[i]).filter(Boolean);
+view(`<h2>প্লেলিস্ট</h2><button class="btn" data-a="newpl">＋ নতুন প্লেলিস্ট</button><div class="row" style="margin-top:12px">${pls.map(p=>`<a class="card" href="#/pl/${p.id}">${cv('',p.id,'♫')}<p>${esc(p.n)}</p><small>${p.t.length} গান</small></a>`).join('')}</div><h2>পছন্দের গান</h2>${list(g(liked),'lk')}<h2>সম্প্রতি শোনা</h2>${list(g(recent),'rc')}`)}
+function plist(id){const p=pls.find(x=>x.id==id);if(!p)return view('<p class="mu">প্লেলিস্ট নেই।</p>');
+view(`<div class="hero">${cv('',p.id,'♫')}<div><small class="mu">প্লেলিস্ট</small><h1>${esc(p.n)}</h1><button class="btn" data-a="all" data-l="pl">▶ বাজাও</button><button class="btn g" data-a="ren" data-id="${p.id}">✎ নাম বদল</button><button class="btn g" data-a="delpl" data-id="${p.id}">🗑 মুছে ফেলো</button></div></div>`+(p.t.length?list(p.t.map(i=>TK[i]).filter(Boolean).map(t=>t),'pl').replace(/data-a="add"/g,'data-a="rm" data-p="'+p.id+'"').replace(/>＋</g,'>✕<'):'<p class="mu">খালি — যেকোনো গানের পাশে ＋ চেপে যোগ করো।</p>'))}
+function queue(){view(`<h2>কিউ</h2><button class="btn g" data-a="clr">কিউ খালি করো</button><div style="margin-top:10px">${P.q.length?list(P.q,'q').replace(/data-a="play" data-l="q"/g,'data-a="play" data-l="q"'):'<p class="mu">কিউ খালি।</p>'}</div>`)}
+function route(){const h=location.hash.slice(2).split('/'),[p,a]=[h[0]||'home',decodeURIComponent(h.slice(1).join('/'))];
+document.querySelectorAll('header a[data-n]').forEach(x=>x.classList.toggle('on',x.dataset.n==p||(p=='pl'&&x.dataset.n=='library')));scrollTo(0,0);
+({home,search:()=>search(a),album:()=>album(a),artist:()=>artist(a),library:lib,pl:()=>plist(a),queue}[p]||home)()}
+addEventListener('hashchange',route);
+/* ---------- modal & actions ---------- */
+const md=h=>{const m=$('#md');m.innerHTML='<div>'+h+'</div>';m.classList.add('on')},cls=()=>$('#md').classList.remove('on');
+$('#md').onclick=e=>{if(e.target.id=='md')cls()};
+const savePl=()=>sv('pls',pls);
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,L=LISTS[b.dataset.l]||[];
+if(a=='play'){play(L,+b.dataset.i);if(b.dataset.l=='q'){P.q=L}}
+else if(a=='all'){L.length?play(L,0):toast('বাজানোর মতো গান নেই')}
+else if(a=='shuf'){if(!L.length)return;const s=[...L].sort(()=>Math.random()-.5);P.shuf=true;sv('shuf',true);play(s,0)}
+else if(a=='like'){const id=b.dataset.id;liked=liked.includes(id)?liked.filter(x=>x!=id):[id,...liked];sv('liked',liked);sv('tk',{...ld('tk',{}),...Object.fromEntries(liked.map(i=>[i,TK[i]]).filter(x=>x[1]))});b.classList.toggle('on',liked.includes(id));b.textContent=liked.includes(id)?'♥':'♡'}
+else if(a=='add'){const id=b.dataset.id;md(`<h3>প্লেলিস্টে যোগ করো</h3>${pls.map(p=>`<button class="btn g" style="display:block;width:100%" data-a="addto" data-p="${p.id}" data-id="${esc(id)}">${esc(p.n)}</button>`).join('')}<input id="npn" placeholder="নতুন প্লেলিস্টের নাম"><button class="btn" data-a="mkadd" data-id="${esc(id)}">বানাও ও যোগ করো</button>`)}
+else if(a=='addto'){const p=pls.find(x=>x.id==b.dataset.p);if(!p.t.includes(b.dataset.id))p.t.push(b.dataset.id);savePl();sv('tk',{...ld('tk',{}),[b.dataset.id]:TK[b.dataset.id]});cls();toast('যোগ হয়েছে ✓')}
+else if(a=='mkadd'){const n=$('#npn').value.trim();if(!n)return;pls.push({id:'p'+Date.now(),n,t:[b.dataset.id]});savePl();sv('tk',{...ld('tk',{}),[b.dataset.id]:TK[b.dataset.id]});cls();toast('প্লেলিস্ট বানানো হয়েছে ✓')}
+else if(a=='newpl'){md('<h3>নতুন প্লেলিস্ট</h3><input id="npn" placeholder="নাম"><button class="btn" data-a="mk">বানাও</button>')}
+else if(a=='mk'){const n=$('#npn').value.trim();if(!n)return;pls.push({id:'p'+Date.now(),n,t:[]});savePl();cls();lib()}
+else if(a=='ren'){md(`<h3>নাম বদল</h3><input id="npn" value="${esc(pls.find(x=>x.id==b.dataset.id).n)}"><button class="btn" data-a="rn" data-id="${b.dataset.id}">সেভ</button>`)}
+else if(a=='rn'){const n=$('#npn').value.trim();if(!n)return;pls.find(x=>x.id==b.dataset.id).n=n;savePl();cls();plist(b.dataset.id)}
+else if(a=='delpl'){md(`<h3>প্লেলিস্টটি মুছবে?</h3><button class="btn" data-a="dl" data-id="${b.dataset.id}">হ্যাঁ, মুছো</button><button class="btn g" data-a="cx">না</button>`)}
+else if(a=='dl'){pls=pls.filter(x=>x.id!=b.dataset.id);savePl();cls();location.hash='#/library'}
+else if(a=='cx')cls();
+else if(a=='rm'){const p=pls.find(x=>x.id==b.dataset.p),id=b.closest('.tr').dataset.id;p.t=p.t.filter(x=>x!=id);savePl();plist(p.id)}
+else if(a=='clr'){P.q=[];P.i=-1;au.pause();au.removeAttribute('src');lastId=null;upd();queue()}
+});
+route();upd();
+</script></body></html>
